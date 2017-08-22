@@ -1,0 +1,19 @@
+<div class="row">
+	<div class="col col-md-8 col-lg-4 mx-auto mt-5">
+		<form id="user-form" (ngSubmit)="createUser(userCreationForm)" name="userForm" #userCreationForm="ngForm">
+			<h4 class="form-heading text-center">CREATE USER</h4>
+			<div class="form-group">
+				<input class="form-control" type="text" name="name" placeholder="Enter Your Name" required ngModel>
+			</div>
+
+			<div class="form-group">
+				<input class="form-control" name="email" type="email" placeholder="Enter Your Email" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" ngModel>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-primary btn-block" [disabled]="userCreationForm.invalid">CREATE USER</button>
+			</div>
+		</form>
+		<!-- <div ng-class="{ 'bg-success': isSuccess, 'bg-danger': !isSuccess }" *ngIf="isSubmitted">sfgf{{message}}</div> -->
+		<a routerLink="/users" routerLinkActive="active" >See List Of All Users</a>
+	</div>
+</div>
