@@ -3,6 +3,10 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 
+// Service Import 
+import { UserService } from './services/user.service';
+// import { User } from './services/user';
+
 import { AppComponent } from './app.component';
 import { UserCreateComponent } from './user-create/user-create.component';
 import { UserViewComponent } from './user-view/user-view.component';
@@ -50,7 +54,7 @@ const appRoutes: Routes = [
       // { enableTracing: true } // <-- debugging purposes only
     )
   ],
-  providers: [],
+  providers: [UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

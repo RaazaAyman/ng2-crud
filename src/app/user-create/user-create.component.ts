@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
-interface User {
-	name: string,
-	email: string
-}
+import { User } from '../services/user';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-user-create',
@@ -12,7 +9,7 @@ interface User {
 })
 export class UserCreateComponent implements OnInit {
   user: User;
-  constructor() { }
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
    
@@ -20,8 +17,7 @@ export class UserCreateComponent implements OnInit {
 
   createUser(userName: any): void {
   	this.user = userName.value;
-  	console.log(this.user)
-  	
+    this.userService.addUser(this.user);
   	userName.reset();
   }
 

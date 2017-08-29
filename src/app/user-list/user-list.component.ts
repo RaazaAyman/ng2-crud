@@ -1,27 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
-interface User {
-	name: string,
-	email: string,
-	id: number
-};
-
-class User {
-	constructor(name: string, email: string) {
-		this.id = Math.floor((Math.random() * 10) + Math.random());
-		this.name = name;
-		this.email = email;
-	}
-}
-
-const USERS: User[] = [
-	new User('Yuvaraj', 'shivarajnaidu@gmail.com'),
-	new User('Madhu', 'madhu@gmail.com'),
-	new User('Prakash', 'mailmeprakash@gmail.com'),
-	new User('Udhaya', 'udhaya@gmail.com'),
-	new User('Balu', 'balunaidu95@gmail.com'),
-	new User('Babu', 'babu@gmail.com')
-];
+import { User } from '../services/user';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-user-list',
@@ -30,11 +9,19 @@ const USERS: User[] = [
 })
 export class UserListComponent implements OnInit {
   users: User[];
-  constructor() {
+  constructor(private userService: UserService) {
+  	
   }
 
-  ngOnInit() {
-  	this.users = USERS;
+  getUsers(): void {
+  	this.userService.getUsers()
+  	.then(users => {
+  		this.users = users;
+  	})
+  }
+
+  ngOnInit(): void {
+  	this.getUsers();
   }
 
 }

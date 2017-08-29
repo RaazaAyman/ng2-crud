@@ -1,4 +1,4 @@
-<ul class="list-group" *ngIf="users.length > 0">
+<ul class="list-group" *ngIf="users && users.length > 0">
 	<li class="list-group-item" *ngFor="let user of users">
 	<a routerLink="/users/{{user.id}}">{{user.name}}</a>
 	</li>
