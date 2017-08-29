@@ -16,7 +16,9 @@ export class UserService {
   constructor() { }
 
   getUsers(): Promise<User[]> {
-  	return Promise.resolve(USERS);
+  	return new Promise((resolve, reject) => {
+       setTimeout(() => resolve(USERS), 2000)
+    })
   }
 
   getUserById(id: number): Promise<User> {
