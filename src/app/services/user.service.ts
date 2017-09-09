@@ -21,7 +21,7 @@ export class UserService {
     })
   }
 
-  getUserById(id: number): Promise<User> {
+  getUserById(id: string): Promise<User> {
   	const user = USERS.find(user => user.id === id);
   	return Promise.resolve(user);
   }
