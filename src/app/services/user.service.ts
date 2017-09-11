@@ -6,8 +6,8 @@ const USERS: User[] = [
 	new User('Madhu', 'madhu@gmail.com'),
 	new User('Prakash', 'mailmeprakash@gmail.com'),
 	new User('Udhaya', 'udhaya@gmail.com'),
-	new User('Balu', 'balunaidu95@gmail.com'),
-	new User('Babu', 'babu@gmail.com')
+	new User('Balu V', 'balunaidu95@gmail.com'),
+	new User('Babu V', 'babu@gmail.com')
 ];
 
 @Injectable()
@@ -17,7 +17,7 @@ export class UserService {
 
   getUsers(): Promise<User[]> {
   	return new Promise((resolve, reject) => {
-       setTimeout(() => resolve(USERS), 2000)
+       setTimeout(() => resolve(USERS), 500)
     })
   }
 
