@@ -3,11 +3,17 @@ function getId(): string {
 	return randomStr;
 }
 
+
+
+
+
+
+
 export class User {
-	id: string;
+	id: string = '';
 
 	constructor(public name: string, public email: string) {
-	    this.id = getId();
+	    // this.id = getId();
 	}
 
 }

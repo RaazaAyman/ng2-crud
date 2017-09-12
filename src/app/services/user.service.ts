@@ -1,34 +1,53 @@
 import { Injectable } from '@angular/core';
 import { User } from './user';
+import { Headers, Http } from '@angular/http';
+import 'rxjs/add/operator/toPromise';
+const apiURL: string = 'http://localhost:3000/api/users';
 
-const USERS: User[] = [
-	new User('Yuvaraj', 'shivarajnaidu@gmail.com'),
-	new User('Madhu', 'madhu@gmail.com'),
-	new User('Prakash', 'mailmeprakash@gmail.com'),
-	new User('Udhaya', 'udhaya@gmail.com'),
-	new User('Balu V', 'balunaidu95@gmail.com'),
-	new User('Babu V', 'babu@gmail.com')
-];
+
 
 @Injectable()
 export class UserService {
 
-  constructor() { }
+  constructor(private http: Http) { }
 
   getUsers(): Promise<User[]> {
-  	return new Promise((resolve, reject) => {
-       setTimeout(() => resolve(USERS), 500)
-    })
+    return this.http
+    .get(apiURL)
+    .toPromise()
+    .then(response => response.json())
+    .then(data => {
+      const {users, isSuccess, message} = data;
+      if (!isSuccess) {
+        throw new Error(message || 'Something Went Wrong')
+      }
+      return users;
+  })
+    .catch(this.handleError);
   }
 
   getUserById(id: string): Promise<User> {
-  	const user = USERS.find(user => user.id === id);
-  	return Promise.resolve(user);
+  	return this.getUsers()
+    .then(users => {
+      const user = users.find(user => user.id === id);
+      return (user || {});
+    });
   }
 
-  addUser(user: User): void {
+  addUser(user: User) {
   	const {name, email} = user;
-  	USERS.push(new User(name, email));
+  	// USERS.push(new User(name, email));
+    return this.http
+    .post(apiURL, {name, email})
+    .toPromise()
+    .then(response => response.json().data)
+    .then(data => (data || {}).user)
+    .catch(this.handleError);
+  }
+
+  private handleError(error: any): Promise<any> {
+    console.error('An error occurred', error); // for demo purposes only
+    return Promise.reject(error.message || error);
   }
 
 }
