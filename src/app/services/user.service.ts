@@ -5,7 +5,6 @@ import 'rxjs/add/operator/toPromise';
 const apiURL: string = 'http://localhost:3000/api/users';
 
 
-
 @Injectable()
 export class UserService {
 
@@ -22,21 +21,27 @@ export class UserService {
         throw new Error(message || 'Something Went Wrong')
       }
       return users;
-  })
+    })
     .catch(this.handleError);
   }
 
   getUserById(id: string): Promise<User> {
-  	return this.getUsers()
-    .then(users => {
-      const user = users.find(user => user.id === id);
-      return (user || {});
-    });
+    return this.http
+    .get(`${apiURL}/${id}`)
+    .toPromise()
+    .then(response => response.json())
+    .then(data => {
+      const {user, isSuccess, message} = data;
+      if (!isSuccess) {
+        throw new Error(message || 'Something Went Wrong')
+      }
+      return user;
+    })
+    .catch(this.handleError);
   }
 
   addUser(user: User) {
   	const {name, email} = user;
-  	// USERS.push(new User(name, email));
     return this.http
     .post(apiURL, {name, email})
     .toPromise()

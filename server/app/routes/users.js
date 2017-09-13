@@ -20,11 +20,11 @@ router.route('/')
    * Will Return All Existing Users.
    */
 
-  .get((req, res) => {
+  .get((req, res, next) => {
 
     User.find({}, (error, users) => {
       if (error) return next(error);
-      res.json({isSuccess: true, users});
+      res.json({ isSuccess: true, users });
     })
 
   })
@@ -33,7 +33,7 @@ router.route('/')
    * Will Create New User.
    */
 
-  .post((req, res) => {
+  .post((req, res, next) => {
 
     const {
       name,
@@ -52,10 +52,10 @@ router.route('/')
       return next(error);
     }
 
-    const user = new User({name, email});
+    const user = new User({ name, email });
     user.save((error, user) => {
       if (error) return next(error);
-      res.json({isSuccess: true, user})
+      res.json({ isSuccess: true, user })
     })
 
   })
@@ -67,28 +67,30 @@ router.route('/:userId')
    * Will Return User With Id Value userId.
    */
 
-  .get((req, res) => {
-    const userId = req.params.userId;
-    let resData = {};
+  .get((req, res, next) => {
+    const { userId } = (req.params || {});
 
-    if (userId) {
-      User.findOne({ id: userId }, (err, user) => {
-        if (err) return console.log(err);
-        if (user) {
-          resData = generateResponse(undefined, true)
-          resData.user = user;
-        } else {
-          const message = 'USER NOT FOUND';
-          resData = generateResponse(message, false)
-        }
-        res.json(resData);
-
-      })
-    } else {
-      const message = 'BAD REQUEST: USER ID MUST BE PROVIDED';
-      resData = generateResponse(message, false)
-      res.json(resData);
+    if (!userId) {
+      const error = new Error('User Id Should Not Be Empty');
+      return next(error);
     }
+
+    User.findOne({ id: userId }, (error, user) => {
+      if (error) {
+        console.error(error);
+        return next(error);
+      }
+
+      if (!user) {
+        const error = new Error('User Not Exist');
+        return next(error);
+      }
+
+      res.json({ isSuccess: true, user });
+
+
+
+    })
 
   })
 
@@ -96,8 +98,8 @@ router.route('/:userId')
    * Will Update User Details..
    */
 
-  .put((req, res) => {
-    const userId = req.params.userId;
+  .put((req, res, next) => {
+    const { userId } = (req.params || {});
     const body = req.body;
 
     if (body && body.name && body.email) {
@@ -107,8 +109,8 @@ router.route('/:userId')
         email: body.email
       };
 
-      User.findOneAndUpdate(query, update, (err, user) => {
-        if (err) return console.log(err);
+      User.findOneAndUpdate(query, update, (error, user) => {
+        if (error) return console.log(error);
         // Here user contains document value befor updating it..
         const message = 'successfully updated';
         const resData = generateResponse(message, true);
@@ -126,23 +128,25 @@ router.route('/:userId')
    * Will Delete User With Id Value userId.
    */
 
-  .delete((req, res) => {
-    const userId = req.params.userId;
+  .delete((req, res, next) => {
+    const userId = (req.params || {});
 
-    if (userId) {
-      User.findOneAndRemove({ id: userId }, (err, doc) => {
-        if (err) return console.log(err);
-        // console.log(doc)
-        const message = `successfully deleted user named ${doc.name}`;
-        const resData = generateResponse(message, true);
-        res.json(resData);
-      })
-    } else {
-      const message = `BAD REQUEST: USER ID MUST BE PROVIDED`;
-      const resData = generateResponse(message, false);
-      res.json(resData);
+    if (!userId) {
+      const error = new Error('User Id Should Not Be Empty');
+      console.error(error);
+      return next(error);
     }
+
+    User.findOneAndRemove({ id: userId }, (error, doc) => {
+      if (error) {
+        return next(error);
+      }
+      res.json({ isSuccess: true, user: doc });
+    })
   })
+
+
+// Error Handling Middleware...
 
 router.use((error, req, res, next) => {
   const { message } = error;
