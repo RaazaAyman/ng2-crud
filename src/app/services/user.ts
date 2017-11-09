@@ -4,11 +4,6 @@ function getId(): string {
 }
 
 
-
-
-
-
-
 export class User {
 	id: string = '';
 

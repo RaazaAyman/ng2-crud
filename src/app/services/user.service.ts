@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { User } from './user';
-import { Headers, Http } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
-const apiURL: string = 'http://localhost:3000/api/users';
 
+const apiURL: string = 'http://localhost:3000/api/users';
 
 @Injectable()
 export class UserService {
 
-  constructor(private http: Http) { }
+  constructor(private http: HttpClient) { }
 
   getUsers(): Promise<User[]> {
     return this.http
@@ -45,7 +45,7 @@ export class UserService {
     return this.http
     .post(apiURL, {name, email})
     .toPromise()
-    .then(response => response.json().data)
+    .then(res => res.json().data)
     .then(data => (data || {}).user)
     .catch(this.handleError);
   }
