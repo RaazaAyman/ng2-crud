@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from './user';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import 'rxjs/add/operator/toPromise';
 
 const apiURL: string = 'http://localhost:3000/api/users';
 
@@ -14,8 +13,7 @@ export class UserService {
     return this.http
     .get(apiURL)
     .toPromise()
-    .then(response => response.json())
-    .then(data => {
+    .then((data: any) => {
       const {users, isSuccess, message} = data;
       if (!isSuccess) {
         throw new Error(message || 'Something Went Wrong')
@@ -29,8 +27,7 @@ export class UserService {
     return this.http
     .get(`${apiURL}/${id}`)
     .toPromise()
-    .then(response => response.json())
-    .then(data => {
+    .then((data: any) => {
       const {user, isSuccess, message} = data;
       if (!isSuccess) {
         throw new Error(message || 'Something Went Wrong')
@@ -45,8 +42,7 @@ export class UserService {
     return this.http
     .post(apiURL, {name, email})
     .toPromise()
-    .then(res => res.json().data)
-    .then(data => (data || {}).user)
+    .then((data: any) => (data || {}).user)
     .catch(this.handleError);
   }
 

@@ -5,7 +5,7 @@ function getId(): string {
 
 
 export class User {
-	id: string = '';
+	id: string;
 
 	constructor(public name: string, public email: string) {
 	    // this.id = getId();
