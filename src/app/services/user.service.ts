@@ -9,6 +9,7 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
+// Get User List
   getUsers(): Promise<User[]> {
     return this.http
     .get(apiURL)
@@ -23,6 +24,7 @@ export class UserService {
     .catch(this.handleError);
   }
 
+// Get User By His ID
   getUserById(id: string): Promise<User> {
     return this.http
     .get(`${apiURL}/${id}`)
@@ -37,13 +39,24 @@ export class UserService {
     .catch(this.handleError);
   }
 
-  addUser(user: User) {
+
+// Create New User 
+  addUser(user: User): Promise<User> {
   	const {name, email} = user;
     return this.http
     .post(apiURL, {name, email})
     .toPromise()
     .then((data: any) => (data || {}).user)
     .catch(this.handleError);
+  }
+
+// Delete User
+  deleteUser(user: User): Promise<Object> {
+    const { id } = user;
+    return this.http
+    .delete(`${apiURL}/${id}`)
+    .toPromise()
+    .catch(this.handleError)
   }
 
   private handleError(error: any): Promise<any> {

@@ -129,7 +129,7 @@ router.route('/:userId')
    */
 
   .delete((req, res, next) => {
-    const userId = (req.params || {});
+    const { userId } = (req.params || {});
 
     if (!userId) {
       const error = new Error('User Id Should Not Be Empty');

@@ -13,11 +13,13 @@ import { UserViewComponent } from './user-view/user-view.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { UserEditComponent } from './user-edit/user-edit.component';
 
+import { CancelNavToUser } from './user-list/cancel-nav';
 const appRoutes: Routes = [
   {
     path: 'users',
     component: UserListComponent,
-    data: { title: 'Users List' }
+    data: { title: 'Users List' },
+    canDeactivate: [CancelNavToUser]
   },
   {
     path: 'users/new',
@@ -55,7 +57,7 @@ const appRoutes: Routes = [
       // { enableTracing: true } // <-- debugging purposes only
     )
   ],
-  providers: [UserService],
+  providers: [UserService, CancelNavToUser],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
