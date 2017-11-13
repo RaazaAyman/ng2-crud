@@ -1,3 +1,24 @@
-<ul>
-<li *ngFor="let key of userKeys">{{user[key]}}</li>
-</ul>
+<div class="row">
+  <div class="col col-md-8 col-lg-4 mx-auto mt-5">
+    <div *ngIf="user" class="card" style="width: 30rem;">
+      <div class="card-header" style="font-weight: bold;">
+        {{user.name}}
+        <button type="button" class="btn btn-info btn-sm float-right action-user-edit" title="Click To Edit User" (click)="goToUpdateUserView($event, user);">
+          <i class="fa fa-pencil" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn-danger btn-sm float-right mr-2 action-user-delete" title="Click To Delete User" (click)="deleteUser($event, user)">
+          <i class="fa fa-trash" aria-hidden="true"></i>
+        </button>
+      </div>
+      <table class="card-body table table-hover table-sm">
+        <tbody>
+          <tr *ngFor="let key of userKeys">
+            <td>{{key}}</td>
+            <td>{{user[key]}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div><a [routerLink]="['/users']">See List Of All Users</a></div>
+  </div>
+</div>

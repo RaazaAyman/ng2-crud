@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Location }                 from '@angular/common';
 import { UserService }     from '../services/user.service';
 import { User }     from '../services/user';
@@ -16,8 +16,9 @@ export class UserViewComponent implements OnInit {
   constructor(
   private userService: UserService,
   private route: ActivatedRoute,
-  private location: Location
-  	) { }
+  private location: Location,
+  private router: Router
+  	) {}
 
   ngOnInit() {
   	 this.route.paramMap
@@ -26,6 +27,20 @@ export class UserViewComponent implements OnInit {
     	this.user = user;
     	this.userKeys = Object.keys(user);
     });
+  }
+
+  deleteUser(event, user): void {
+    this.userService.deleteUser(user)
+    .then((data: any) => {
+      const { isSuccess } = data;
+      if (isSuccess) {
+        this.router.navigate(['users'])
+      }
+    })
+  }
+
+  goToUpdateUserView(event, user): void {
+
   }
 
 }

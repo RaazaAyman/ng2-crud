@@ -1,14 +1,19 @@
 <div class="row">
-	<div class="col col-md-8 col-lg-4 mx-auto mt-5">
-		<div class="list-group" *ngIf="users.length > 0">
-			<a class="list-group-item list-group-item-action" (click)="toggleNavigation($event)" *ngFor="let user of users" [routerLink]="['/users', user.id]">{{user.name}} 
-				<button type="button" class="btn btn-info btn-sm float-right mr-3 action-user-edit" title="Click To Edit User" (click)="goToUpdateUserView($event, user);">
+  <div class="col col-md-8 col-lg-4 mx-auto mt-5">
+    <div class="list-group" *ngIf="users.length > 0">
+      <a class="list-group-item list-group-item-action" (click)="toggleNavigation($event)" *ngFor="let user of users" [routerLink]="['/users', user.id]">{{user.name}} 
+				<button type="button" class="btn btn-info btn-sm float-right action-user-edit" title="Click To Edit User" (click)="goToUpdateUserView($event, user);">
 					<i class="fa fa-pencil" aria-hidden="true"></i>
 				</button>
-				<button type="button" class="btn btn-danger btn-sm float-right action-user-delete" title="Click To Delete User" (click)="deleteUser($event, user)">
+				<button type="button" class="btn btn-danger btn-sm float-right mr-2 action-user-delete" title="Click To Delete User" (click)="deleteUser($event, user)">
 					<i class="fa fa-trash" aria-hidden="true"></i> 
 				</button>
 			</a>
-		</div>
-	</div>
+    </div>
+    <div *ngIf="users.length === 0" class="text-center">No Users Yet! Create New User..</div>
+
+    <div class="mt-5" [ngClass]="{'text-center': users.length === 0}">
+    <a class="btn btn-warning" (click)="toggleNavigation($event)" [routerLink]="['/users/new']">Create New User</a>
+    </div>
+  </div>
 </div>
