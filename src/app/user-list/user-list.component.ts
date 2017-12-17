@@ -3,8 +3,6 @@ import  { Router } from '@angular/router';
 import { User } from '../services/user';
 import { UserService } from '../services/user.service';
 
-import { CancelNavToUser } from './cancel-nav';
-
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
@@ -21,12 +19,6 @@ export class UserListComponent implements OnInit {
     this.canNavigate = true;
   }
 
-
-  toggleNavigation(event): void {
-    const { nodeName } = event.target;
-    this.canNavigate = (nodeName === 'A') ? true : false; 
-  }
-
   getUsers(): void {
   	this.userService.getUsers()
   	.then(users => {
@@ -34,12 +26,9 @@ export class UserListComponent implements OnInit {
   	})
   }
 
-  goToUpdateUserView(event, user): void {
-    this.toggleNavigation(event);
-  }
-
   deleteUser(event, user): void {
-    this.canNavigate = false;
+    event.preventDefault();
+    event.stopPropagation();
     this.userService.deleteUser(user)
     .then((data: any) => {
       const { isSuccess } = data;
@@ -52,7 +41,6 @@ export class UserListComponent implements OnInit {
 
   ngOnInit(): void {
   	this.getUsers();
-    this.canNavigate = true;
   }
 
 }
